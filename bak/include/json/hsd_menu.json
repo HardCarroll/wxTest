@@ -1,0 +1,39 @@
+{
+  "button": [
+    {
+      "name": "品牌策划",
+      "type": "view",
+      "url": "https://mp.weixin.qq.com/mp/homepage?__biz=MzI3Mjk4ODAwMg==&hid=1&sn=5d6b91a11148e8e590559ef40eb1329e&scene=18",
+      "key": "BTN_0_0"
+    },
+    {
+      "name": "空间设计",
+      "type": "view",
+      "url": "https://mp.weixin.qq.com/mp/homepage?__biz=MzI3Mjk4ODAwMg==&hid=1&sn=5d6b91a11148e8e590559ef40eb1329e&scene=18",
+      "key": "BTN_1_0"
+    },
+    {
+      "name": "MORE",
+      "sub_button": [
+        {
+          "name": "联系我们",
+          "type": "view",
+          "url": "http://test.webserv.cn/debug/index.php",
+          "key": "BTN_2_0"
+        },
+        {
+          "name": "加入我们",
+          "type": "view",
+          "url": "http://www.baidu.com",
+          "key": "BTN_2_1"
+        },
+        {
+          "name": "往期案例",
+          "type": "view",
+          "url": "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI3Mjk4ODAwMg==#wechat_redirect",
+          "key": "BTN_2_2"
+        }
+      ]
+    }
+  ]
+}

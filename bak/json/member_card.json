@@ -1,0 +1,68 @@
+{
+  "card": {
+    "card_type": "MEMBER_CARD",
+    "member_card": {
+      "background_pic_url": "http://mmbiz.qpic.cn/mmbiz_jpg/hg6SBNicDBrHuzKL6AcqKPGXg379sBH0lGWF3We8j2Xia43qNkBxibnyeA0CQx7gGM1UUK6QCgEQe15b36KrGl3Fg/0",
+      "base_info": {
+        "logo_url": "http://mmbiz.qpic.cn/mmbiz_jpg/hg6SBNicDBrHuzKL6AcqKPGXg379sBH0lGWF3We8j2Xia43qNkBxibnyeA0CQx7gGM1UUK6QCgEQe15b36KrGl3Fg/0",
+        "brand_name": "商户名称，12汉字",
+        "code_type": "CODE_TYPE_QRCODE",
+        "title": "会员卡",
+        "color": "Color040",
+        "notice": "使用时请出示此券",
+        "service_phone": "17752845216",
+        "description": "卡券使用须知，最多1024汉字",
+        "date_info": {
+          "type": "DATE_TYPE_PERMANENT"
+        },
+        "sku": {
+          "quantity": 5000000
+        },
+        "get_limit": 1,
+        "use_custom_code": false,
+        "can_give_friend": false,
+        "use_all_locations": true,
+        "center_title": "居中标题",
+        "center_sub_title":"副标题",
+        "center_url":"http://www.2345.com",
+        "custom_url_name": "自定义入口",
+        "custom_url": "http://weixin.qq.com",
+        "custom_url_sub_title": "入口汉字tips",
+        "promotion_url_name": "营销入口",
+        "promotion_url": "http://www.qq.com",
+        "promotion_url_sub_title": "入口汉字tips",
+        "need_push_on_view": true
+      },
+      "auto_activate": true,
+      "activate_url": "http://www.sina.com.cn",
+      "supply_bonus": true,
+      "bonus_rule": {
+        "cost_money_unit": 1000,
+        "increase_bonus": 1,
+        "max_increase_bonus": 200,
+        "init_increase_bonus": 10,
+        "cost_bonus_unit": 10,
+        "reduce_money": 100,
+        "least_money_to_use_bonus": 2000,
+        "max_reduce_bonus": 50
+      },
+      "supply_balance": false,
+      "prerogative": "特权说明",
+      "custom_field1": {
+        "name_type": "FIELD_NAME_TYPE_COUPON",
+        "url": "http://www.qq.com"
+      },
+      "custom_field2": {
+        "name_type": "FIELD_NAME_TYPE_LEVEL",
+        "name": "test",
+        "url": "http://www.qq.com"
+      },
+      "custom_cell1": {
+        "name": "激活后入口",
+        "tips": "激活后显示",
+        "url": "http://www.baidu.com"
+      },
+      "discount": 12
+    }
+  }
+}

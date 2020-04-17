@@ -1,0 +1,54 @@
+{
+  "button": [
+    {
+      "name": "韵味田园",
+      "sub_button": [
+        {
+          "name": "环境展示",
+          "type": "view",
+          "url": "https://fileafbd49b47920.iamh5.cn/v3/idea/c8vpxGCY",
+          "key": "BTN_0_0"
+        },
+        {
+          "name": "经典菜品",
+          "type": "view",
+          "url": "http://ywty.0731webtech.com/sub_pages/classic.php",
+          "key": "BTN_0_1"
+        }
+      ]
+    },
+    {
+      "name": "美食福利",
+      "sub_button": [
+        {
+          "name": "最新活动",
+          "type": "view",
+          "url": "https://mp.weixin.qq.com/s/E9LWgkKCLBMeTM0ciQLdlA",
+          "key": "BTN_1_0"
+        },
+        {
+          "name": "邀您尝新",
+          "type": "click",
+          "key": "BTN_1_1"
+        }
+      ]
+    },
+    {
+      "name": "我要去",
+      "sub_button": [
+        {
+          "name": "立即预约",
+          "type": "view",
+          "url": "http://ywty.0731webtech.com/sub_pages/dial.php",
+          "key": "BTN_2_0"
+        },
+        {
+          "name": "一键导航",
+          "type": "view",
+          "url": "https://apis.map.qq.com/tools/poimarker?type=0&marker=coord:28.162689,113.010436;title:韵味田园本味菜馆;addr:湖南省长沙市雨花区车站南路160号&referer=TEST&key=Y53BZ-VJ4KI-YBJGJ-5D5HW-4VNPZ-2QFI7",
+          "key": "BTN_2_1"
+        }
+      ]
+    }
+  ]
+}

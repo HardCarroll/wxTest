@@ -1,0 +1,39 @@
+{
+  "card": {
+    "card_type": "GROUPON",
+    "groupon": {
+      "base_info": {
+        "logo_url": "http://mmbiz.qpic.cn/mmbiz_jpg/hg6SBNicDBrHuzKL6AcqKPGXg379sBH0lGWF3We8j2Xia43qNkBxibnyeA0CQx7gGM1UUK6QCgEQe15b36KrGl3Fg/0",
+        "brand_name": "商户名称，12汉字",
+        "code_type": "CODE_TYPE_QRCODE",
+        "title": "卡券名称，9汉字",
+        "sub_title": "卡券副标题，18汉字",
+        "color": "Color040",
+        "notice": "卡券使用提示，16汉字",
+        "service_phone": "17752845216",
+        "description": "卡券使用须知，最多1024汉字\n不可与其他优惠同享\n如需发票，请在消费时向商户提出\n店内均可使用，仅限堂食",
+        "date_info": {
+          "type": "DATE_TYPE_FIX_TERM",
+          "fixed_begin_term": 0,
+          "fixed_term": 3
+        },
+        "sku": {
+          "quantity": 1000
+        },
+        "get_limit": 3,
+        "use_limit": 1,
+        "use_custom_code": false,
+        "bind_openid": false,
+        "can_share": true,
+        "can_give_friend": true,
+        "custom_url_name": "最多五个字",
+        "custom_url": "http://www.qq.com",
+        "custom_url_sub_title": "6个汉字tips",
+        "promotion_url_name": "helloworld",
+        "promotion_url": "http://www.qq.com",
+        "promotion_url_sub_title": "6个汉字tips"
+      },
+      "deal_detail": "优惠说明内容字段"
+    }
+  }
+}
