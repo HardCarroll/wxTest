@@ -6,7 +6,7 @@ date_default_timezone_set("Asia/Shanghai");
 require_once($_SERVER["DOCUMENT_ROOT"]."/include/php/wxCallbackAPI.php");
 $appData = json_decode(file_get_contents($_SERVER["DOCUMENT_ROOT"]."/include/json/config.json"), TRUE);
 
-$wxApp = wxCallbackAPI::getInstance($appData["appId"], $appData["appSecrect"], $appData["appToken"]);
+$wxApp = wxCallbackAPI::getInstance($appData["appId"], $appData["appSecrect"], $appData["Token"]);
 
 // $wxApp->test();
 

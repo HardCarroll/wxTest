@@ -5,21 +5,21 @@ class wxCallbackAPI {
   private static $instance;
   private $appId;
   private $appSecret;
-  private $appToken;
+  private $Token;
 
-  private function __construct($appId, $appSecret, $appToken) {
+  private function __construct($appId, $appSecret, $Token) {
     // 私有化克隆函数
     $this->appId = $appId;
     $this->appSecret = $appSecret;
-    $this->appToken = $appToken;
+    $this->Token = $Token;
   }
   private function clone() {
     // 私有化克隆函数
   }
-  public static function getInstance($appId, $appSecret, $appToken) {
+  public static function getInstance($appId, $appSecret, $Token) {
     // 公有静态方法，获取实例对象
     if(!(self::$instance instanceof self)) {
-      self::$instance = new self($appId, $appSecret, $appToken);
+      self::$instance = new self($appId, $appSecret, $Token);
     }
     return self::$instance;
   }
@@ -47,7 +47,7 @@ class wxCallbackAPI {
     $timestamp = $_GET["timestamp"];
     $nonce = $_GET["nonce"];
 
-    $token = $this->appToken;
+    $token = $this->Token;
     $tmpArr = array($token, $timestamp, $nonce);
     sort($tmpArr);
     $tmpStr = implode($tmpArr);
@@ -301,22 +301,75 @@ class wxCallbackAPI {
     }
   }
 
-  private function getToken() {
+  /**
+   * Menu Operate
+   */
+  private function createMenu() {
+    $file = $_SERVER["DOCUMENT_ROOT"]."/include/json/menu.json";
+    $api_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$this->getAppToken();
+    $menuArray = json_decode(file_get_contents($file), TRUE);
+    $msg = https_request($api_url, json_encode($menuArray["selfmenu_info"], 320));
+    return $msg;
+  }
+  private function queryMenu() {
+    $file = $_SERVER["DOCUMENT_ROOT"]."/include/json/menu.json";
+    $api_url = "https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info?access_token=".$this->getAppToken();
+    $menu = https_request($api_url);
+    file_put_contents($file, $menu);
+    return $menu;
+  }
+  private function deleteMenu() {
+    $api_url = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=".$this->getAppToken();
+    $msg = https_request($api_url);
+    return $msg;
+  }
+
+  private function getAppToken($bRefresh = false) {
     $cur_time = time();
     $api_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" . $this->appId . "&secret=" . $this->appSecret;
     $file = $_SERVER["DOCUMENT_ROOT"]."/include/json/token.json";
     if(file_exists($file)) {
       $tokenArray = json_decode(file_get_contents($file), TRUE);
-      $newToken = https_request($api_url);
+      if($cur_time - $tokenArray["appToken"]["expire_time"] >= 7200) {
+        $bRefresh = true;
+      }
     }
+    else {
+      $bRefresh = true;
+    }
+
+    if($bRefresh) {
+      $token = https_request($api_url);
+      $newToken = json_decode($token, TRUE);
+      if(isset($newToken["access_token"]) && !empty($newToken["access_token"])) {
+        $access_token = $tokenArray["appToken"]["access_token"] = $newToken["access_token"];
+        $tokenArray["appToken"]["expire_time"] = $newToken["expire_in"] + $cur_time;
+        file_put_contents($file, json_encode($tokenArray, 320));
+      }
+      else {
+        throw new Exception($token);
+      }
+    }
+    else {
+      $access_token = $tokenArray["appToken"]["access_token"];
+    }
+
+    return $access_token;
   }
 
   public function test() {
-    echo "appId: " . $this->appId;
-    echo "<br>";
-    echo "appSecret: " . $this->appSecret;
-    echo "<br>";
-    echo "appToken: " . $this->appToken;
-    echo "<br>";
+    // echo "appId: " . $this->appId;
+    // echo "<br>";
+    // echo "appSecret: " . $this->appSecret;
+    // echo "<br>";
+    // echo "Token: " . $this->Token;
+    // echo "<br>";
+    
+    try {
+      echo $this->deleteMenu();
+    }
+    catch (Exception $e) {
+      echo 'Message: ' . $e->getMessage();
+    }
   }
 }
