@@ -1,6 +1,4 @@
 <?php
-require_once($_SERVER["DOCUMENT_ROOT"]."/include/php/commonAPI.php");
-
 class wxCallbackAPI {
   private static $instance;
   private $appId;
@@ -8,7 +6,7 @@ class wxCallbackAPI {
   private $Token;
 
   private function __construct($appId, $appSecret, $Token) {
-    // 私有化克隆函数
+    // 私有化构造函数
     $this->appId = $appId;
     $this->appSecret = $appSecret;
     $this->Token = $Token;
@@ -178,6 +176,12 @@ class wxCallbackAPI {
       case "CLICK":
         $result = $this->onMenuClick($object);
         break;
+      case "scancode_waitmsg":
+        $result = $this->onScanCode($object);
+        break;
+      case "LOCATION":
+        $result = $this->onLocation($object);
+        break;
       default :
         $result = "Unknown Event";
         break;
@@ -201,7 +205,16 @@ class wxCallbackAPI {
    * @return $result: 处理完成结果
    */
   private function onMenuClick($object) {
-    $content = "MenuClick";
+    $content = "Menu ".$object->EventKey." Click";
+    return $this->transmitText($object, $content);
+  }
+  private function onScanCode($object) {
+    $content = $object->EventKey." ".json_encode($object->ScanCodeInfo, 320);
+    return $this->transmitText($object, $content);
+  }
+  private function onLocation($object) {
+    // $content = "您当前的位置是：\n[纬度:".$object->Latitude."]\n[经度:".$object->Longitude."]\n[精度:".$object->Precision."]";
+    $content = json_encode($object, 320);
     return $this->transmitText($object, $content);
   }
 
@@ -253,7 +266,8 @@ class wxCallbackAPI {
    * 响应类型为位置的消息
    */
   private function responseLocation($object) {
-    $content = "MsgType: " . $object->MsgType . "\nLocationX: " . $object->Location_X . "\nLocationY: " . $object->Location_Y . "\nLabel: " . $object->Label;
+    // $content = "MsgType: " . $object->MsgType . "\nLocationX: " . $object->Location_X . "\nLocationY: " . $object->Location_Y . "\nLabel: " . $object->Label;
+    $content = json_encode($object, 320);
     return $this->transmitText($object, $content);
   }
 
@@ -297,34 +311,15 @@ class wxCallbackAPI {
     }
     else {
       // echo "hello world";
+      // $this->printMessage();
       exit;
     }
   }
 
   /**
-   * Menu Operate
+   * 获取access_token
    */
-  private function createMenu() {
-    $file = $_SERVER["DOCUMENT_ROOT"]."/include/json/menu.json";
-    $api_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$this->getAppToken();
-    $menuArray = json_decode(file_get_contents($file), TRUE);
-    $msg = https_request($api_url, json_encode($menuArray["selfmenu_info"], 320));
-    return $msg;
-  }
-  private function queryMenu() {
-    $file = $_SERVER["DOCUMENT_ROOT"]."/include/json/menu.json";
-    $api_url = "https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info?access_token=".$this->getAppToken();
-    $menu = https_request($api_url);
-    file_put_contents($file, $menu);
-    return $menu;
-  }
-  private function deleteMenu() {
-    $api_url = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=".$this->getAppToken();
-    $msg = https_request($api_url);
-    return $msg;
-  }
-
-  private function getAppToken($bRefresh = false) {
+  private function appTokenAPI($bRefresh = false) {
     $cur_time = time();
     $api_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" . $this->appId . "&secret=" . $this->appSecret;
     $file = $_SERVER["DOCUMENT_ROOT"]."/include/json/token.json";
@@ -356,20 +351,13 @@ class wxCallbackAPI {
 
     return $access_token;
   }
-
-  public function test() {
-    // echo "appId: " . $this->appId;
-    // echo "<br>";
-    // echo "appSecret: " . $this->appSecret;
-    // echo "<br>";
-    // echo "Token: " . $this->Token;
-    // echo "<br>";
-    
+  public function getAppToken($bRefresh = false) {
     try {
-      echo $this->deleteMenu();
+      return $this->appTokenAPI();
     }
     catch (Exception $e) {
-      echo 'Message: ' . $e->getMessage();
+      echo $e->getMessage();
     }
   }
+
 }
