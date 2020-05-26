@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo</title>
+  <link rel="stylesheet" href="/library/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/library/plugin/fileupload/fileupload.css">
+</head>
+<body>
+  <div class="file-upload">
+    <div class="list">
+      <div class="list-item">
+        <div class="pic"></div>
+        <div class="pic"></div>
+        <div class="pic"></div>
+        <div class="pic"></div>
+        <div class="pic"></div>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="btn btn-default btn-file">Select File</div>
+      <input type="file" id="fileUpload" class="hidden" multiple>
+    </div>
+  </div>
+
+  <script src="/library/jquery/jquery.min.js"></script>
+  <script src="/library/plugin/fileupload/fileupload.js"></script>
+  <script>
+    $(function() {
+      
+      $(".btn-file").on("click", function() {
+        $("#fileUpload").click().fileUpload();
+      });
+      
+    });
+  </script>
+</body>
+</html>

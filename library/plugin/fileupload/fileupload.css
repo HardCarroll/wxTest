@@ -1,0 +1,20 @@
+.file-upload {
+  position: relative;
+}
+.file-upload .list {
+  position: relative;
+}
+.file-upload .list .list-item {
+  font-size: 0;
+}
+.file-upload .list .pic {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 100px;
+  height: 100px;
+  background-color: gray;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}

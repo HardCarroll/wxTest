@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER["DOCUMENT_ROOT"]."/include/php/include.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/include/include.php");
 
 /**
  * 如果有"echostr"字段，说明是一个URL验证请求，
@@ -10,5 +10,3 @@ if (isset($_GET["echostr"])){
 }else {
   $wxApp->responseMsg();
 }
-
-echo "hello world";

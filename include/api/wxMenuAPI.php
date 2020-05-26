@@ -15,20 +15,26 @@ class wxMenuAPI {
     return self::$instance;
   }
   
-  public function createAPI($token, $menu = "") {
+  /**
+   * 添加菜单
+   * http请求方式：POST
+   */
+  public function createMenuAPI($token, $menu = "") {
     $file = $_SERVER["DOCUMENT_ROOT"]."/include/json/menu.json";
     $api_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$token;
-    if(!empty($menu)) {
-      $menuArray = json_decode($menu, TRUE);
+
+    if(empty($menu)) {
+      $menu = file_get_contents($file);
     }
-    else {
-      $menuArray = json_decode(file_get_contents($file), TRUE);
-    }
-    $msg = https_request($api_url, json_encode($menuArray["selfmenu_info"], 320));
+    $msg = https_request($api_url, $menu);
     return $msg;
   }
 
-  public function queryAPI($token) {
+  /**
+   * 查询菜单
+   * http请求方式: GET
+   */
+  public function queryMenuAPI($token) {
     $file = $_SERVER["DOCUMENT_ROOT"]."/include/json/menu.json";
     $api_url = "https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info?access_token=".$token;
     $menu = https_request($api_url);
@@ -36,7 +42,11 @@ class wxMenuAPI {
     return $menu;
   }
 
-  public function deleteAPI($token) {
+  /**
+   * 删除菜单
+   * http请求方式: GET
+   */
+  public function deleteMenuAPI($token) {
     $api_url = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=".$token;
     $msg = https_request($api_url);
     return $msg;

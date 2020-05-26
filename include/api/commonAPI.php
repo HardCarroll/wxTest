@@ -18,6 +18,13 @@ function getRandomKey($str_pol = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghij
   return $str_key;
 }
 
+function save_logs($file, $content, $type = "用户") {
+  $dir = dirname($file);
+  is_dir($dir) or @mkdir($dir, 0777, true);
+  $fulldata = "From >>".$type."<< @ ".date("Y-m-d H:i:s")."\n\r".$content."\n\r";
+  file_put_contents($file, $fulldata, FILE_APPEND);
+}
+
 /**
  * 发送请求
  * @param $url：地址

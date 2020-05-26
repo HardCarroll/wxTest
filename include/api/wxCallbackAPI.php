@@ -4,20 +4,22 @@ class wxCallbackAPI {
   private $appId;
   private $appSecret;
   private $Token;
+  private $appHandle;
 
-  private function __construct($appId, $appSecret, $Token) {
+  private function __construct($appId, $appSecret, $Token, $appHandle) {
     // 私有化构造函数
     $this->appId = $appId;
     $this->appSecret = $appSecret;
     $this->Token = $Token;
+    $this->appHandle = $appHandle;
   }
   private function clone() {
     // 私有化克隆函数
   }
-  public static function getInstance($appId, $appSecret, $Token) {
+  public static function getInstance($appId, $appSecret, $Token, $appHandle) {
     // 公有静态方法，获取实例对象
     if(!(self::$instance instanceof self)) {
-      self::$instance = new self($appId, $appSecret, $Token);
+      self::$instance = new self($appId, $appSecret, $Token, $appHandle);
     }
     return self::$instance;
   }
@@ -195,7 +197,11 @@ class wxCallbackAPI {
    * @return $result: 处理完成结果
    */
   private function onSubscrible($object) {
-    $content = "我是黄狮虎，感谢你关注我的测试号！\n<a href='www.webserv.cn'>测试</a>";
+    $openid = $object->FromUserName;
+    $user_json = $this->appHandle["wxUser"]->getUserInfoAPI($this->getAppToken(), $openid);
+    $user_arr = json_decode($user_json, TRUE);
+    $content = "终于等到你，" . $user_arr["nickname"];
+    $content .= "\n感谢你关注我的测试号！\n我是<a href='www.webserv.cn'>黄狮虎</a>";
     return $this->transmitText($object, $content);
   }
 
@@ -214,8 +220,8 @@ class wxCallbackAPI {
   }
   private function onLocation($object) {
     // $content = "您当前的位置是：\n[纬度:".$object->Latitude."]\n[经度:".$object->Longitude."]\n[精度:".$object->Precision."]";
-    $content = json_encode($object, 320);
-    return $this->transmitText($object, $content);
+    // $content = json_encode($object, 320);
+    // return $this->transmitText($object, $content);
   }
 
   /**
@@ -231,6 +237,10 @@ class wxCallbackAPI {
       case "图文":
         $newsData = array("Title" => "图文1标题", "Description" => "关于图文1的文字描述信息", "PicUrl" => "http://test.webserv.cn/media/image/back.jpg", "Url" => "https://www.webserv.cn");
         $result = $this->transmitNews($object, $newsData);
+        break;
+      case "whoami":
+        $content = $this->appHandle["wxUser"]->getUserInfoAPI($this->appTokenAPI(), $object->FromUserName);
+        $result = $this->transmitText($object, $content);
         break;
       default:
         $result = $this->transmitText($object, "Hello World");
@@ -280,6 +290,8 @@ class wxCallbackAPI {
     if(!empty($postStr)) {
       // 把XML数据解析成一个对象
       $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+      $file = $_SERVER["DOCUMENT_ROOT"]."/logs/".$postObj->FromUserName.date("/Ymd/")."log.xml";
+      save_logs($file, $postStr);
       // 将消息类型分离成不同的类型
       $MSG_TYPE = trim($postObj->MsgType);
       switch($MSG_TYPE) {
@@ -306,12 +318,12 @@ class wxCallbackAPI {
           break;
       }
 
+      save_logs($file, $result, "公众号");
       // 通过此语句反馈至用户端
       echo $result;
     }
     else {
       // echo "hello world";
-      // $this->printMessage();
       exit;
     }
   }
@@ -353,11 +365,28 @@ class wxCallbackAPI {
   }
   public function getAppToken($bRefresh = false) {
     try {
-      return $this->appTokenAPI();
+      return $this->appTokenAPI($bRefresh);
     }
     catch (Exception $e) {
       echo $e->getMessage();
     }
+  }
+
+  public function getHandleByName($name) {
+    if(isset($name) && !empty($name)) {
+      return $this->appHandle[$name];
+    }
+  }
+  public function getHandleByIndex($index = 0) {
+    return $this->appHandle[$index];
+  }
+
+  public function debug() {
+    // $file = $_SERVER["DOCUMENT_ROOT"]."/logs/".date("Ymd/")."test.log";
+    // $dir = dirname($file);
+    // is_dir($dir) or @mkdir($dir, 0777, true);
+    // echo dirname($file);
+    // file_put_contents($file, "test file");
   }
 
 }
