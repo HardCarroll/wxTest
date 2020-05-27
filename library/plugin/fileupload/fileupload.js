@@ -59,8 +59,23 @@
       }
 
       return $(this).each(function() {
-        $(this).bind('change.fileUpload', function(e) {
-          debug(e);
+        $(this).off("change").on("change", function(e) {
+          $(this).parent().find(".list").remove();
+          var ele = $('<div class="list"></div>');
+          var files = e.target.files;
+          for(var i=0; i<files.length; i++) {
+            var item = $('<div class="list-item"></div>');
+            item.css({"background-image": "url("+createObjectURL(files[i])+")"});
+            item.append('<div class="controls"><span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-trash"></span></div><div class="info"><span class="name"></span></div>').appendTo(ele);
+            item.find("span.name").html(files[i].name);
+            ele.appendTo($(this).parent())
+          }
+
+          ele.find("span.glyphicon-trash").off("click").on("click", function() {
+            // console.log("trash");
+            $(this).parent().parent().remove();
+            // console.log(files);
+          });
         });
 
         if(settings.callback) {
@@ -102,9 +117,6 @@
   }
 
   function debug(e) {
-    console.log(e);
-    if(!$("#fu-frame").length) {
-    }
   }
 
 })(jQuery);
