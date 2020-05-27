@@ -9,20 +9,28 @@
 </head>
 <body>
   <div class="file-upload">
+    <div class="btn btn-default btn-file">Select File</div>
+    <input type="file" id="fileUpload" class="hidden" multiple>
     <div class="list">
       <div class="list-item">
-        <div class="pic"></div>
+        <div class="pic">
+          <div class="controls">
+            <span class="glyphicon glyphicon-unchecked"></span>
+            <span class="glyphicon glyphicon-trash"></span>
+          </div>
+          <div class="info">
+            <span class="name">0.jpg</span>
+          </div>
+        </div>
         <div class="pic"></div>
         <div class="pic"></div>
         <div class="pic"></div>
         <div class="pic"></div>
       </div>
     </div>
-    <div class="controls">
-      <div class="btn btn-default btn-file">Select File</div>
-      <input type="file" id="fileUpload" class="hidden" multiple>
-    </div>
   </div>
+
+  <span class="glyphicon glyphicon-unchecked"></span>
 
   <script src="/library/jquery/jquery.min.js"></script>
   <script src="/library/plugin/fileupload/fileupload.js"></script>
@@ -32,7 +40,9 @@
       $(".btn-file").on("click", function() {
         $("#fileUpload").click().fileUpload();
       });
-      
+      // $(".list-item .pic").each(function() {
+      //   $(this).css({"background-image": "url(/media/image/0.jpg)"});
+      // });
     });
   </script>
 </body>
