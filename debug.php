@@ -7,6 +7,8 @@ $randomKey = getRandomKey();
 echo "appToken: " . $appToken . "<br/>";
 echo "randomKey: " . $randomKey . "<br/>";
 
+// $wxMenu->createMenuAPI($appToken);
+
 // $str = ",hello, world";
 // $sep = ",";
 // $nPos = strpos($str, $sep);

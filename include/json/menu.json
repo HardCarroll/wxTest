@@ -7,7 +7,8 @@
     },
     {
       "name": "AI",
-      "type": "click",
+      "type": "view",
+      "url": "http://test.webserv.cn/demo.html",
       "key": "KEY_1_0"
     },
     {

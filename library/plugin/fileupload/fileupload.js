@@ -42,52 +42,41 @@
 //   });
 // });
 ;(function($){
-  var defaults = {cssFile: "/library/plugin/fileupload/fileupload.css", debug: false, callback: ""};
+  var defaults = {cssFile: "/library/plugin/fileupload/fileupload.css", inputId: "#fileUpload", debug: false, callback: ""};
   var methods = {
     init: function(options) {
       // call init();
       var settings = $.extend({}, defaults, options);
 
-      // load css file
-      var bCssFile = $("head").find("link[href='"+ defaults.cssFile +"']").length;
-      if(!bCssFile) {
-        $("head").append('<link rel="stylesheet" href="'+defaults.cssFile+'">');
-      }
-      bCssFile = $("head").find("link[href='"+ settings.cssFile +"']").length;
-      if(!bCssFile) {
-        $("head").append('<link rel="stylesheet" href="'+settings.cssFile+'">');
-      }
-
       return $(this).each(function() {
-        $(this).off("change").on("change", function(e) {
-          $(this).parent().find(".list").remove();
-          var ele = $('<div class="list"></div>');
-          var files = e.target.files;
-          for(var i=0; i<files.length; i++) {
-            var item = $('<div class="list-item"></div>');
-            item.css({"background-image": "url("+createObjectURL(files[i])+")"});
-            item.append('<div class="controls"><span class="glyphicon glyphicon-unchecked"></span><span class="glyphicon glyphicon-trash"></span></div><div class="info"><span class="name"></span></div>').appendTo(ele);
-            item.find("span.name").html(files[i].name);
-            ele.appendTo($(this).parent())
-          }
+        settings.this = $(this);
+        // var _this = $(this);
+        // load css file
+        var bCssFile = $("head").find("link[href='"+ defaults.cssFile +"']").length;
+        if(!bCssFile) {
+          $("head").append('<link rel="stylesheet" href="'+defaults.cssFile+'">');
+        }
+        bCssFile = $("head").find("link[href='"+ settings.cssFile +"']").length;
+        if(!bCssFile) {
+          $("head").append('<link rel="stylesheet" href="'+settings.cssFile+'">');
+        }
+        // add buttons
+        settings.this.append('<div class="button"><div class="btn btn-default btn-select" data-target="'+settings.inputId+'">选择文件</div><div class="btn btn-success btn-upload">开始上传</div></div>');
+        if(!$("body").find(settings.inputId).length) {
+          $("body").append('<input type="file" id="'+settings.inputId.slice(1)+'" class="hidden" multiple>');
+        }
 
-          ele.find("span.glyphicon-trash").off("click").on("click", function() {
-            // console.log("trash");
-            $(this).parent().parent().remove();
-            // console.log(files);
-          });
+        settings.this.find(".btn-select").off("click").on("click", function() {
+          selectFiles(settings);
         });
 
-        if(settings.callback) {
-          settings.callback.apply(this);
-        }
+        settings.this.find(".btn-upload").off("click").on("click", function() {
+          uploadFiles(settings);
+        });
       });
     },
-    sayHi: function(options) {
-      return $(this).each(function() {
-        var files = $(this)[0].files;
-        console.log(files);
-      });
+    debug: function(msg) {
+      console.log(msg);
     }
   };
 
@@ -116,7 +105,71 @@
     }
   }
 
-  function debug(e) {
+  function selectFiles(settings) {
+    $(settings.inputId).click().off("change").on("change", function(e) {
+      settings.this.find(".list").remove();
+      var ele = $('<div class="list"></div>');
+      var files = settings.files = Array.prototype.slice.call(e.target.files);
+      for(var i=0; i<files.length; i++) {
+        var item = $('<div class="list-item"><div class="controls"></span><span class="glyphicon glyphicon-trash"></span></div><div class="progress hidden"><div class="progress-bar progress-bar-success"></div></div><div class="info"><span class="name"></span></div></div>');
+        item.appendTo(ele).css({"background-image": "url("+createObjectURL(files[i])+")"}).find("span.name").html(files[i].name);
+      }
+      ele.appendTo(settings.this);
+
+      ele.find("span.glyphicon-trash").off("click").on("click", function() {
+        files.splice($(this).parent().parent().index(), 1);
+        if(files.length) {
+          // remove div.list-item
+          $(this).parent().parent().remove();
+        }
+        else {
+          // remove div.list
+          $(this).parent().parent().parent().remove();
+        }
+
+        settings.files = files;
+      });
+    });
+  }
+
+  function uploadFiles(settings) {
+    // console.log(settings);
+    settings.this.find(".progress").removeClass("hidden");
+
+    var fmd = new FormData();
+    for(var i=0; i<settings.files.length; i++) {
+      // fmd.append("files["+i+"]", settings.files[i]);
+    // }
+    fmd.append("files", settings.files[i]);
+    $.ajax({
+      url: "/library/plugin/fileupload/fileupload.php",
+      type: "POST",
+      data: fmd,
+      processData: false,
+      contentType: false,
+      dataType: "json",
+      xhr: function () {
+        myxhr = $.ajaxSettings.xhr();
+        if (myxhr.upload) {
+          myxhr.upload.addEventListener("progress", function (e) {
+            var loaded = e.loaded;
+            var total = e.total;
+            var percent = Math.floor(loaded / total * 100);
+            $(".progress-bar").css("width", percent + "%");
+            
+          }, false);
+        }
+        return myxhr;
+      },
+      success: function (ret) {
+        console.log(ret);
+      },
+      error: function (err) {
+        console.log(err);
+      }
+    });
+  }
+
   }
 
 })(jQuery);

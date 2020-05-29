@@ -9,17 +9,35 @@
 </head>
 <body>
   <div class="file-upload">
-    <div class="btn btn-default btn-file">Select File</div>
-    <input type="file" id="fileUpload" class="hidden" multiple>
+    <!-- <div class="btn btn-default btn-select">Select File</div>
+    <div class="btn btn-success btn-upload">Upload</div>
+    <input type="file" id="fileUpload" class="hidden" multiple> -->
+    <!-- <div class="list">
+      <div class="list-item" style="background-image: url(/media/image/0.jpg);">
+        <div class="controls">
+          <span class="glyphicon glyphicon-trash"></span>
+        </div>
+        <div class="progress"><div class="progress-bar progress-bar-success"></div></div>
+        <div class="info">
+          <span class="name">test.jpg</span></div>
+      </div>
+    </div> -->
   </div>
+
+  <div class="btn btn-default btn-debug">Debug</div>
 
   <script src="/library/jquery/jquery.min.js"></script>
   <script src="/library/plugin/fileupload/fileupload.js"></script>
   <script>
     $(function() {
       
-      $(".btn-file").off("click").on("click", function() {
-        $("#fileUpload").click().fileUpload();
+      // $(".btn-select").off("click").on("click", function() {
+      //   $("#fileUpload").click().fileUpload();
+      // });
+      $(".file-upload").fileUpload();
+
+      $(".btn-debug").off("click").on("click", function() {
+        console.log("btn-debug has been clicked!");
       });
 
     });
