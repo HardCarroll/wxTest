@@ -1,67 +1,27 @@
-// $(function() {
-//   $("#fileupload").click(function() {
-//     $("#upload").click();
-//   });
-//   $("#upload").off("change").on("change", function(e) {
-//     var fmd = new FormData();
-//     for (var i=0; i<e.target.files.length; i++) {
-//       var ele = $('<li class="list-item"><span class="file-name"></span><span class="seperator"> / </span><span class="file-size"></span><span class="progress"></span></li>');
-//       ele.find(".file-name").html(e.target.files[i].name);
-//       ele.find(".file-size").html(Math.floor(e.target.files[i].size/1024) + "Kb");
-//       $(".file-list").append(ele);
-//       fmd.append("files["+i+"]", e.target.files[i]);
-//     }
-
-//     $.ajax({
-//       url: "/include/plugin/fileupload/fileupload.php",
-//       type: "POST",
-//       data: fmd,
-//       processData: false,
-//       contentType: false,
-//       dataType: "json",
-//       xhr: function() {
-//         myxhr = $.ajaxSettings.xhr();
-//         if(myxhr.upload) {
-//           myxhr.upload.addEventListener("progress", function(e) {
-//             var loaded = e.loaded;
-//             var total = e.total;
-//             var percent = Math.floor(loaded/total*100);
-//             $(".progress").css("width",percent+"%");
-//           }, false);
-//         }
-//         return myxhr;
-//       },
-//       success: function(ret) {
-//         console.log(ret);
-//       },
-//       error: function(err) {
-//         console.log(err);
-//       }
-//     });
-
-//   });
-// });
 ;(function($){
-  var defaults = {cssFile: "/library/plugin/fileupload/fileupload.css", inputId: "#fileUpload", debug: false, callback: ""};
+  var js = document.scripts;
+  var path = js[js.length-1].src.substring(0, js[js.length-1].src.lastIndexOf("/")+1);
+  var domain = "http://" + document.domain;
+  var realPath = path.replace(domain, "");
+  var defaults = {filePath: realPath, inputId: "#fileUpload", debug: false, callback: ""};
   var methods = {
     init: function(options) {
       // call init();
       var settings = $.extend({}, defaults, options);
 
       return $(this).each(function() {
+        // save DOM nodes
         settings.this = $(this);
-        // var _this = $(this);
+        // settings.files = null;
+        
         // load css file
-        var bCssFile = $("head").find("link[href='"+ defaults.cssFile +"']").length;
+        bCssFile = $("head").find("link[href='"+ settings.filePath +"fileupload.css']").length;
         if(!bCssFile) {
-          $("head").append('<link rel="stylesheet" href="'+defaults.cssFile+'">');
+          $("head").append('<link rel="stylesheet" href="'+settings.filePath+'fileupload.css">');
         }
-        bCssFile = $("head").find("link[href='"+ settings.cssFile +"']").length;
-        if(!bCssFile) {
-          $("head").append('<link rel="stylesheet" href="'+settings.cssFile+'">');
-        }
-        // add buttons
-        settings.this.append('<div class="button"><div class="btn btn-default btn-select" data-target="'+settings.inputId+'">选择文件</div><div class="btn btn-success btn-upload">开始上传</div></div>');
+
+        // add buttons: select file & upload file
+        settings.this.append('<div class="button"><div class="btn btn-default btn-select" data-target="'+settings.inputId+'">选择文件</div><div class="btn btn-success btn-upload" disabled>开始上传</div></div>');
         if(!$("body").find(settings.inputId).length) {
           $("body").append('<input type="file" id="'+settings.inputId.slice(1)+'" class="hidden" multiple>');
         }
@@ -71,7 +31,11 @@
         });
 
         settings.this.find(".btn-upload").off("click").on("click", function() {
-          uploadFiles(settings);
+          if(settings.files) {
+            for(var i=0; i<settings.files.length; i++) {
+              uploadFiles(settings, i);
+            }
+          }
         });
       });
     },
@@ -132,17 +96,15 @@
     });
   }
 
-  function uploadFiles(settings) {
+  function uploadFiles(settings, index = 0) {
     // console.log(settings);
-    settings.this.find(".progress").removeClass("hidden");
+    settings.this.find(".progress").eq(index).removeClass("hidden");
 
     var fmd = new FormData();
-    for(var i=0; i<settings.files.length; i++) {
-      // fmd.append("files["+i+"]", settings.files[i]);
-    // }
-    fmd.append("files", settings.files[i]);
+    fmd.append("uploadFiles", settings.files[index]);
+    fmd.append("token", "uploadFiles");
     $.ajax({
-      url: "/library/plugin/fileupload/fileupload.php",
+      url: settings.filePath + "fileupload.php",
       type: "POST",
       data: fmd,
       processData: false,
@@ -155,8 +117,7 @@
             var loaded = e.loaded;
             var total = e.total;
             var percent = Math.floor(loaded / total * 100);
-            $(".progress-bar").css("width", percent + "%");
-            
+            $(".progress-bar").eq(index).css("width", percent + "%");
           }, false);
         }
         return myxhr;
@@ -168,7 +129,6 @@
         console.log(err);
       }
     });
-  }
 
   }
 
