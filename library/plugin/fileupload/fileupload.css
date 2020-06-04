@@ -1,13 +1,7 @@
-.file-upload {
+.list {
   position: relative;
 }
-/* .file-upload .button {} */
-.file-upload .list {
-  position: relative;
-  padding: 5px;
-  box-shadow: 0 0 6px -2px #000;
-}
-.file-upload .list .list-item {
+.list .list-item {
   position: relative;
   display: inline-block;
   vertical-align: top;
@@ -20,10 +14,7 @@
   background-repeat: no-repeat;
   background-size: contain;
 }
-/* .file-upload .list .list-item+.list-item {
-  margin-left: 10px;
-} */
-.file-upload .list .list-item .controls {
+.list .list-item .controls {
   position: absolute;
   top: 0;
   left: 0;
@@ -36,11 +27,11 @@
   cursor: default;
   text-align: center;
 }
-.file-upload .list .list-item .controls span.glyphicon {
+.list .list-item .controls span.glyphicon {
   cursor: pointer;
   margin: 0 5px;
 }
-.file-upload .list .list-item .progress {
+.list .list-item .progress {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -49,7 +40,7 @@
   border-radius: 0;
   margin: 0;
 }
-.file-upload .list .list-item .info {
+.list .list-item .info {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -60,4 +51,19 @@
   background-color: rgba(0, 0, 0, 0.6);
   overflow: hidden;
   cursor: default;
+}
+
+#uploadModal .modal-header {
+  text-align: center;
+  font-size: 16px;
+  border: none;
+}
+#uploadModal .modal-body {
+  max-height: 600px;
+  overflow-y: auto;
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+}
+#uploadModal .modal-footer {
+  border: none;
 }

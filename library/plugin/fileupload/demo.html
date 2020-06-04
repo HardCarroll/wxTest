@@ -5,33 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Demo</title>
   <link rel="stylesheet" href="/library/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/library/plugin/fileupload/fileupload.css">
+  <!-- <link rel="stylesheet" href="/library/plugin/fileupload/fileupload.css"> -->
 </head>
 <body>
   <div class="file-upload"></div>
-
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal">
-    Launch demo modal
-  </button>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">文件上传</div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default">关闭</button>
-          <button type="button" class="btn btn-primary">上传</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="btn btn-default btn-debug">Debug</div>
 
   <script src="/library/jquery/jquery.min.js"></script>
   <script src="/library/bootstrap/js/bootstrap.min.js"></script>
@@ -39,11 +16,6 @@
   <script>
     $(function() {
       $(".file-upload").fileUpload();
-
-      $(".btn-debug").off("click").on("click", function() {
-        console.log("btn-debug has been clicked!");
-      });
-
     });
   </script>
 </body>
