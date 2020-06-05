@@ -9,6 +9,7 @@
   width: 150px;
   height: 150px;
   margin: 5px;
+  padding: 5px;
   background-color: gray;
   background-position: center;
   background-repeat: no-repeat;
@@ -31,17 +32,23 @@
   cursor: pointer;
   margin: 0 5px;
 }
+.list .list-item .controls span.glyphicon-trash:hover {
+  color: #F00;
+}
 .list .list-item .progress {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  left: 0;
+  bottom: 0;
   width: 100%;
-  height: 10px;
   border-radius: 0;
   margin: 0;
+  opacity: 0.8;
+  filter: opacity(80);
+  z-index: 1;
 }
 .list .list-item .info {
   position: absolute;
+  left: 0;
   bottom: 0;
   width: 100%;
   height: 20px;
@@ -53,17 +60,17 @@
   cursor: default;
 }
 
-#uploadModal .modal-header {
+.modal-header {
   text-align: center;
   font-size: 16px;
   border: none;
 }
-#uploadModal .modal-body {
+.modal-body {
   max-height: 600px;
   overflow-y: auto;
   border-top: 1px solid #e5e5e5;
   border-bottom: 1px solid #e5e5e5;
 }
-#uploadModal .modal-footer {
+.modal-footer {
   border: none;
 }

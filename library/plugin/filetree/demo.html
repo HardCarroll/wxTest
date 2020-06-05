@@ -3,19 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>fileupload demo</title>
+  <title>filetree demo</title>
   <link rel="stylesheet" href="/library/bootstrap/css/bootstrap.min.css">
-  <!-- <link rel="stylesheet" href="/library/plugin/fileupload/fileupload.css"> -->
 </head>
 <body>
-  <div class="file-upload"></div>
-
+  <input type="button" value="BTN_TEST" id="btn">
   <script src="/library/jquery/jquery.min.js"></script>
   <script src="/library/bootstrap/js/bootstrap.min.js"></script>
-  <script src="/library/plugin/fileupload/fileupload.js"></script>
+  <script src="/library/plugin/filetree/filetree.js"></script>
   <script>
-    $(function() {
-      $(".file-upload").fileUpload();
+    $("#btn").click(function() {
+      $(this).fileTree({scanPath: "/library"});
     });
   </script>
 </body>

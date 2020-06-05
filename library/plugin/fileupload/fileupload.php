@@ -29,15 +29,15 @@ function proc_uploadFiles($files) {
   switch($files["error"]) {
     case 0:
       $state["err_code"] = 0;
-      $state["err_msg"] = "[".$files["name"]."]已上传成功";
+      $state["err_msg"] = "上传成功";
       break;
     case 1:
       $state["err_code"] = 1;
-      $state["err_msg"] = "[".$files["name"]."]大小超过了php.ini中设置的upload_max_filesize值";
+      $state["err_msg"] = "上传失败[大小超过upload_max_filesize]";
       break;
     case 2:
       $state["err_code"] = 2;
-      $state["err_msg"] = "[".$files["name"]."]大小超过input标签设置的MAX_FILE_SIZE值";
+      $state["err_msg"] = "上传失败[大小超过MAX_FILE_SIZE]";
       break;
     case 4:
       $state["err_code"] = 4;

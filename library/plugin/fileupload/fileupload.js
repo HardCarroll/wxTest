@@ -3,7 +3,7 @@
   var path = js[js.length - 1].src.substring(0, js[js.length - 1].src.lastIndexOf("/") + 1);
   var domain = "http://" + document.domain;
   var realPath = path.replace(domain, "");
-  var defaults = { inputId: "#fileUpload", modalId: "#uploadModal", debug: false, callback: "" };
+  var defaults = { inputId: "#fileUpload", modalId: "#uploadModal", uploadOnSelect: false, callback: "" };
   var methods = {
     init: function (options) {
       // call init();
@@ -12,7 +12,6 @@
 
       return $(this).each(function () {
         // save DOM nodes
-        settings.this = $(this);
         settings.files = [];
 
         // load css file
@@ -28,7 +27,7 @@
         }
 
         // add modal control to body if there is no modal of modalId;
-        var modal = '<div class="modal fade" id="' + settings.modalId.slice(1) + '" tabindex="-1" role="dialog"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header">文件上传</div><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">取消</button><button type="button" class="btn btn-primary btn-upload">上传</button></div></div></div></div>';
+        var modal = '<div class="modal" id="' + settings.modalId.slice(1) + '" tabindex="-1" role="dialog"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header">文件上传</div><div class="modal-body"></div><div class="modal-footer"><span class="tips">总共*个文件，*个已成功上传，*个上传失败！</span><button type="button" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" class="btn btn-primary btn-upload">上传</button></div></div></div></div>';
         if (!$("body").find(settings.modalId).length) {
           $("script").eq(0).before(modal);
           $(settings.modalId).on('hidden.bs.modal', function () {
@@ -48,15 +47,14 @@
           });
         }
 
-        settings.this.addClass("glyphicon glyphicon-file").css({"cursor": "pointer"}).off("click").on("click", function () {
+        $(this).addClass("glyphicon glyphicon-file").css({"cursor": "pointer"}).off("click").on("click", function () {
           // select any file you want to upload
           selectFiles(settings);
         });
+
       });
-    },
-    debug: function (msg) {
-      console.log(msg);
     }
+
   };
 
   $.fn.fileUpload = function (method) {
@@ -92,9 +90,8 @@
       for(var i=0; i<files.length; i++) {
         var item = $('<div class="list-item"><div class="controls"></span><span class="glyphicon glyphicon-trash"></span></div><div class="progress hidden"><div class="progress-bar progress-bar-success"></div></div><div class="info"><span class="name"></span></div></div>');
         item.appendTo(ele).css({"background-image": "url("+createObjectURL(files[i])+")"}).find("span.name").html(files[i].name);
-        // console.log(files[i].type);
       }
-      ele.appendTo(box);
+      box.empty().append(ele);
 
       ele.find("span.glyphicon-trash").off("click").on("click", function() {
         // change array of files, delete current index of item
@@ -107,19 +104,27 @@
         else {
           // remove div.list
           $(this).parent().parent().parent().remove();
+          $(settings.modalId).modal("hide");
         }
 
         settings.files = files;
       });
 
       if(settings.files.length) {
-        // open modal of modalId
-        $(settings.modalId).modal({
-          backdrop: 'static',
-          keyboard: false
-        });
+        if (settings.uploadOnSelect) {
+          for (var i = 0; i < settings.files.length; i++) {
+            uploadFiles(settings, i);
+          }
+        }
+        else {
+          // open modal of modalId
+          $(settings.modalId).modal({
+            backdrop: 'static',
+            keyboard: false
+          });
+        }
       }
-      // console.log(e);
+      
       // 解决选择相同文件不触发change事件
       e.target.value = null;
 
@@ -127,7 +132,9 @@
   }
 
   function uploadFiles(settings, index = 0) {
-    $(settings.modalId).find(".progress").eq(index).removeClass("hidden");
+    var pNode = $(settings.modalId).find(".list-item").eq(index);
+    pNode.find(".progress").removeClass("hidden");
+    pNode.find("span.name").html("");
 
     var fmd = new FormData();
     fmd.append("uploadFiles", settings.files[index]);
@@ -146,18 +153,23 @@
             var loaded = e.loaded;
             var total = e.total;
             var percent = Math.floor(loaded / total * 100);
-            $(settings.modalId).find(".progress-bar").eq(index).css("width", percent + "%");
+            pNode.find(".progress-bar").css("width", percent + "%");
           }, false);
         }
         return myxhr;
       },
       success: function (ret) {
-        console.log(ret);
+        // console.log(ret);
+        if(ret.err_code) {
+          pNode.find(".progress-bar").toggleClass("progress-bar-success").toggleClass("progress-bar-danger");
+        }
+        pNode.find("span.name").html(ret.err_msg);
       },
       error: function (err) {
         console.log(err);
       }
     });
+
   }
 
 })(jQuery);

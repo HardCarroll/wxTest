@@ -1,11 +1,31 @@
 <?php
-require_once($_SERVER["DOCUMENT_ROOT"]."/include/include.php");
+// require_once($_SERVER["DOCUMENT_ROOT"]."/include/include.php");
 
-$appToken = $wxApp->getAppToken();
-$randomKey = getRandomKey();
+// $appToken = $wxApp->getAppToken();
+// $randomKey = getRandomKey();
 
-echo "appToken: " . $appToken . "<br/>";
-echo "randomKey: " . $randomKey . "<br/>";
+// echo "appToken: " . $appToken . "<br/>";
+// echo "randomKey: " . $randomKey . "<br/>";
+
+// echo "upload_max_filesize = " . ini_get("upload_max_filesize") . "<br/>";
+// echo "post_max_size = " . ini_get("post_max_size") . "<br/>";
+
+echo return_bytes("1G");
+
+function return_bytes($val) {
+  $val = trim($val);
+  $last = strtolower($val[strlen($val)-1]);
+  switch($last) {
+      case 'g':
+          $val *= 1024;
+      case 'm':
+          $val *= 1024;
+      case 'k':
+          $val *= 1024;
+  }
+
+  return $val;
+}
 
 // $wxMenu->createMenuAPI($appToken);
 
