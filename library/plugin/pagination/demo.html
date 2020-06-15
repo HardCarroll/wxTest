@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pagination demo</title>
+  <link rel="stylesheet" href="/library/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+
+  <h1>hello world</h1>
+  <div class="test"></div>
+
+  <!-- <div id="pagination">
+    <div class="pagination-content">
+      content of current index page
+    </div>
+    <div class="pagination-buttons">
+      <span class="btn btn-pagination btn-prev"><</span>
+      <span class="btn btn-pagination btn-index active">1</span>
+      <span class="btn btn-pagination btn-index">2</span>
+      <span class="btn btn-pagination btn-index">3</span>
+      <span class="btn btn-pagination btn-index">4</span>
+      <span class="btn btn-pagination btn-index">5</span>
+      <span class="btn btn-pagination btn-next">></span>
+    </div>
+  </div> -->
+
+  <script src="/library/jquery/jquery.min.js"></script>
+  <script src="/library/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/library/plugin/pagination/pagination.js"></script>
+  <script>
+    $(function() {
+      $(".test").pagination();
+    });
+  </script>
+  
+</body>
+</html>

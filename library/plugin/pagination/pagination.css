@@ -1,0 +1,22 @@
+.pagination-buttons {
+  font-size: 0;
+  text-align: center;
+}
+.btn-pagination {
+  border: 1px solid #cacaca;
+  border-radius: 0;
+}
+.btn-pagination+.btn-pagination {
+  border-left: none;
+}
+.btn-pagination:first-child {
+  border-radius: 4px 0 0 4px;
+}
+.btn-pagination:last-child {
+  border-radius: 0 4px 4px 0;
+}
+.btn-pagination.active {
+  background-color: #333;
+  border-color: #333;
+  color: #FFF;
+}
