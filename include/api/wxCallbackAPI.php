@@ -363,6 +363,7 @@ class wxCallbackAPI {
 
     return $access_token;
   }
+  
   public function getAppToken($bRefresh = false) {
     try {
       return $this->appTokenAPI($bRefresh);
