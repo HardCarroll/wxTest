@@ -6,23 +6,37 @@ class wxCallbackAPI {
   private $Token;
   private $appHandle;
 
-  private function __construct($appId, $appSecret, $Token, $appHandle) {
+  private function __construct($appData, $appHandle) {
     // 私有化构造函数
-    $this->appId = $appId;
-    $this->appSecret = $appSecret;
-    $this->Token = $Token;
+    $this->appId = $appData["appId"];
+    $this->appSecret = $appData["appSecrect"];
+    $this->Token = $appData["Token"];
     $this->appHandle = $appHandle;
   }
+  // private function __construct($appId, $appSecret, $Token, $appHandle) {
+  //   // 私有化构造函数
+  //   $this->appId = $appId;
+  //   $this->appSecret = $appSecret;
+  //   $this->Token = $Token;
+  //   $this->appHandle = $appHandle;
+  // }
   private function clone() {
     // 私有化克隆函数
   }
-  public static function getInstance($appId, $appSecret, $Token, $appHandle) {
+  public static function getInstance($appData, $appHandle) {
     // 公有静态方法，获取实例对象
     if(!(self::$instance instanceof self)) {
-      self::$instance = new self($appId, $appSecret, $Token, $appHandle);
+      self::$instance = new self($appData, $appHandle);
     }
     return self::$instance;
   }
+  // public static function getInstance($appId, $appSecret, $Token, $appHandle) {
+  //   // 公有静态方法，获取实例对象
+  //   if(!(self::$instance instanceof self)) {
+  //     self::$instance = new self($appId, $appSecret, $Token, $appHandle);
+  //   }
+  //   return self::$instance;
+  // }
 
   /**
    * 用于微信公众号里填写的URL的验证，
